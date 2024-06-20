@@ -29,8 +29,15 @@ MAIN_MENU() {
     echo Please provide an element as an argument.
   else
     #find element in database
-    ELEMENT_BY_ATOMIC_NUMBER=$($PSQL "$ALL_ELEMENTS_TABLE WHERE p.atomic_number = 1")
-    echo "$ELEMENT_BY_ATOMIC_NUMBER"
+    # checking if its a number or string
+    if [[ $1 =~ ^[0-9]+$ ]];
+    then
+      FIND_ELEMENT_RESULT=$($PSQL "SELECT * FROM elements WHERE atomic_number = $1")
+    else
+      FIND_ELEMENT_RESULT=$($PSQL "SELECT * FROM elements WHERE symbol = '$1' OR name = '$1'")
+    fi
+
+    echo "$FIND_ELEMENT_RESULT"
   fi
 }
 
