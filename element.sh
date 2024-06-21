@@ -8,13 +8,12 @@ ALL_ELEMENTS_TABLE="
     e.atomic_number AS elements_atomic_number,
     p.type_id AS properties_type_id,
     t.type_id AS types_type_id,
-    p.type,
     p.atomic_mass,
     p.melting_point_celsius,
     p.boiling_point_celsius,
     e.symbol,
     e.name,
-    p.type
+    t.type
   FROM
     properties p
   INNER JOIN
@@ -37,6 +36,12 @@ MAIN_MENU() {
       FIND_ELEMENT_RESULT=$($PSQL "SELECT * FROM elements WHERE symbol = '$1' OR name = '$1'")
     fi
 
+    if [[ -z $FIND_ELEMENT_RESULT ]]
+    then
+      echo No element found.
+    else
+      echo $FIND_ELEMENT_RESULT | while read 
+    fi
     echo "$FIND_ELEMENT_RESULT"
   fi
 }
