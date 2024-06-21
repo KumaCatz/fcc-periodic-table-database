@@ -31,18 +31,18 @@ MAIN_MENU() {
     # checking if its a number or string
     if [[ $1 =~ ^[0-9]+$ ]];
     then
-      FIND_ELEMENT_RESULT=$($PSQL "SELECT * FROM elements WHERE atomic_number = $1")
+      FIND_ELEMENT_RESULT=$($PSQL "$ALL_ELEMENTS_TABLE WHERE e.atomic_number = $1")
     else
-      FIND_ELEMENT_RESULT=$($PSQL "SELECT * FROM elements WHERE symbol = '$1' OR name = '$1'")
+      FIND_ELEMENT_RESULT=$($PSQL "$ALL_ELEMENTS_TABLE WHERE e.symbol = '$1' OR e.name = '$1'")
     fi
 
     if [[ -z $FIND_ELEMENT_RESULT ]]
     then
       echo I could not find that element in the database.
     else
-      echo $FIND_ELEMENT_RESULT | while read ELEMENT_ATOMIC_NUMBER BAR ELEMENT_SYMBOL BAR ELEMENT_NAME
+      echo "$FIND_ELEMENT_RESULT" | while IFS='|' read PROP_ATOMIC_NUMBER ELE_ATOMIC_NUMBER PROP_TYPE_ID TYPES_TYPE_ID ELE_ATOMIC_MASS MELTING_POINT_CELS BOILING_POINT_CELS ELE_SYMBOL ELE_NAME ELE_TYPE
       do
-        echo hey
+        echo -e "The element with atomic number $ELE_ATOMIC_NUMBER is $ELE_NAME ($ELE_SYMBOL). It's a $ELE_TYPE, with a mass of $ELE_ATOMIC_MASS amu. $ELE_NAME has a melting point of $MELTING_POINT_CELS celsius and a boiling point of $BOILING_POINT_CELS celsius."
       done
     fi
   fi
