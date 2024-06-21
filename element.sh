@@ -38,11 +38,13 @@ MAIN_MENU() {
 
     if [[ -z $FIND_ELEMENT_RESULT ]]
     then
-      echo No element found.
+      echo I could not find that element in the database.
     else
-      echo $FIND_ELEMENT_RESULT | while read 
+      echo $FIND_ELEMENT_RESULT | while read ELEMENT_ATOMIC_NUMBER BAR ELEMENT_SYMBOL BAR ELEMENT_NAME
+      do
+        echo hey
+      done
     fi
-    echo "$FIND_ELEMENT_RESULT"
   fi
 }
 
